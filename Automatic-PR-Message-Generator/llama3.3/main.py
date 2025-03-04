@@ -60,11 +60,11 @@ Scoring Criteria:
         print(" Debug: Full response from FastAPI:", json.dumps(response_json, indent=2))
 
         # Extract response text safely
-        generated_text = response_json.get("response", "No content from deepseek.")
+        generated_text = response_json.get("response", "No content from llama3.3.")
         
         if not generated_text.strip():
             print("Warning: FASTAPI API returned an empty response.")
-            return "No content from deepseek."
+            return "No content from llama3.3"
 
         return generated_text
 
