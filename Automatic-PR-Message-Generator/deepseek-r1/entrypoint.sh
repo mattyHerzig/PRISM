@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
 # Check for required environment variables
-if [ -z "$FASTAPI_API_KEY" ] || [ -z "$FASTAPI_API_URL" ]; then
-  echo "Error: Missing required environment variables FASTAPI_API_KEY or FASTAPI_API_URL"
+if [ -z "$FAST_API_KEY" ] || [ -z "$FAST_API_URL" ]; then
+  echo "Error: Missing required environment variables FAST_API_KEY or FAST_API_URL"
   exit 1
 fi
 
