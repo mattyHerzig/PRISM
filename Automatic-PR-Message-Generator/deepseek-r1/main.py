@@ -4,12 +4,12 @@ import requests
 import sys
 import json
 
-LLAMA_API_URL = os.getenv("LLAMA_API_URL")
+FASTAPI_API_URL = os.getenv("FASTAPI_API_URL")
 
 def generate_pr_description(diff_content, pr_number):
-    if not LLAMA_API_URL:
-        print("❌ Error: LLAMA_API_URL is not set.")
-        return "Error: LLAMA_API_URL is not configured."
+    if not FASTAPI_API_URL:
+        print("❌ Error: FASTAPI_API_URL is not set.")
+        return "Error: FASTAPI_API_URL is not configured."
 
     
     prompt = """
@@ -48,29 +48,29 @@ Scoring Criteria:
 """
 
     try:
-        print(f"🔹 Sending request to LLAMA_API_URL: {LLAMA_API_URL}")
+        print(f"🔹 Sending request to FASTAPI_API_URL: {FASTAPI_API_URL}")
         
-        response = requests.post(LLAMA_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
+        response = requests.post(FASTAPI_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
         
         if response.status_code != 200:
-            print(f" Error: Received status code {response.status_code} from Llama API")
+            print(f" Error: Received status code {response.status_code} from FASTAPI API")
             return "Error generating PR description."
 
         response_json = response.json()
         print(" Debug: Full response from FastAPI:", json.dumps(response_json, indent=2))
 
         # Extract response text safely
-        generated_text = response_json.get("response", "No content from Llama.")
+        generated_text = response_json.get("response", "No content from deepseek.")
         
         if not generated_text.strip():
-            print("Warning: Llama API returned an empty response.")
-            return "No content from Llama."
+            print("Warning: FASTAPI API returned an empty response.")
+            return "No content from deepseek."
 
         return generated_text
 
     except requests.exceptions.RequestException as e:
-        print(f" Error: Failed to reach Llama API - {e}")
-        return "Error: Unable to contact Llama API."
+        print(f" Error: Failed to reach FASTAPI API - {e}")
+        return "Error: Unable to contact FASTAPI API."
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
