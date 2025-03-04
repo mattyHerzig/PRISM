@@ -61,8 +61,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prBody = process.env.PR_BODY;
-            if (prBody.trim() === "No content from Deepseek-R1.") {
-              console.log(" Skipping PR update because Deepseek-R1 response is empty.");
+            if (prBody.trim() === "No content from the LLM.") {
+              console.log(" Skipping PR update because the LLM response is empty.");
             } else {
               console.log(" Updating PR with generated description.");
               github.rest.pulls.update({
