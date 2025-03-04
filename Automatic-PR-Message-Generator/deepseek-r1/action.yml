@@ -1,5 +1,5 @@
-name: "Generate PR Description with deepseek API"
-description: "Generates a PR description using the deepseek API and updates the PR body."
+name: "Generate PR Description with deepseek"
+description: "Generates a PR description using the deepseek and updates the PR body."
 
 author: "Sai Ram"
 inputs:
