@@ -1,7 +1,7 @@
-name: "Generate PR Description with deepseek API"
-description: "Generates a PR description using the deepseek API and updates the PR body."
+name: "Generate PR Description with mistral"
+description: "Generates a PR description using the mistral and updates the PR body."
 
-author: "Your Name"
+author: "Sai Ram"
 inputs:
   diff_file:
     description: "Path to the diff file"
