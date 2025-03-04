@@ -48,12 +48,12 @@ Scoring Criteria:
 """
 
     try:
-        print(f"🔹 Sending request to FASTAPI_API_URL: {FASTAPI_API_URL}")
+        print(f"🔹 Sending request to FAST_API_URL: {FAST_API_URL}")
         
-        response = requests.post(FASTAPI_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
+        response = requests.post(FAST_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
         
         if response.status_code != 200:
-            print(f" Error: Received status code {response.status_code} from FASTAPI API")
+            print(f" Error: Received status code {response.status_code} from FAST API")
             return "Error generating PR description."
 
         response_json = response.json()
