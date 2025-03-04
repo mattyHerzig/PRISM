@@ -1,5 +1,5 @@
-name: "Generate PR Description with Meta Llama API"
-description: "Generates a PR description using the Meta Llama API and updates the PR body."
+name: "Generate PR Description with deepseek API"
+description: "Generates a PR description using the deepseek API and updates the PR body."
 
 author: "Your Name"
 inputs:
@@ -34,8 +34,8 @@ runs:
 
     - name: Generate PR Description
       env:
-        LLAMA_API_KEY: ${{ secrets.LLAMA_API_KEY }}
-        LLAMA_API_URL: ${{ secrets.LLAMA_API_URL }}
+        NGROK_API_KEY: ${{ secrets.NGROK_API_KEY }}
+        NGROK_API_URL: ${{ secrets.NGROK_API_URL }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python main.py --diff_file ${{ inputs.diff_file }} --output_file ${{ inputs.output_file }} --pr_file ${{ inputs.pr_file }}
