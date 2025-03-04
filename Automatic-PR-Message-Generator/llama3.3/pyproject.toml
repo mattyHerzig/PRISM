@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "auto-pr-body-generator"
 version = "0.1.0"
-description = "A tool to auto-generate PR descriptions using llama3.3"
+description = "A tool to auto-generate PR descriptions using Llama3.3"
 authors = ["Sai Ram <sairammotupalli@gmail.com>"]
 license = "MIT"
 
