@@ -1,1 +1,1 @@
-"Automatic Pr Message Generator
+"Automatic Pr Message Generator"
