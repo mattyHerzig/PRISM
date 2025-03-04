@@ -14,12 +14,12 @@ class Completion:
         Args:
             prompt (str): The prompt text used to generate a response.
         """
-        self.api_url = os.getenv("NGROK_API_URL")  # API URL should be provided as an environment variable
+        self.api_url = os.getenv("FASTAPI_API_URL")  # API URL should be provided as an environment variable
         self.prompt = prompt
         self.result = ""
 
         if not self.api_url:
-            raise ValueError("NGROK_API_URL environment variable is not set")
+            raise ValueError("FASTAPI_API_URL environment variable is not set")
 
     def _complete_prompt(self) -> str:
         """
