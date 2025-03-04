@@ -32,7 +32,7 @@ jobs:
 
       - name: Generate PR Description
         env:
-          LLAMA_API_URL:  https://8e75-129-210-115-231.ngrok-free.app/generate  # Replace with your actual ngrok URL
+          FAST_API_URL:  https://8e75-129-210-115-231.ngrok-free.app/generate  # Replace with your actual ngrok URL
         run: |
           echo " Running main.py with diff_content.txt"
           python main.py "diff_content.txt" "${{ github.event.pull_request.number }}"
@@ -43,7 +43,7 @@ jobs:
           echo " Checking contents of pr_description.txt"
           if [ ! -s pr_description.txt ]; then
             echo " pr_description.txt is empty! Setting default message."
-            echo "No content from Llama." > pr_description.txt
+            echo "No content from Llama3.3" > pr_description.txt
           fi
           pr_body=$(cat pr_description.txt)
           echo "PR_BODY<<EOF" >> $GITHUB_ENV
@@ -61,8 +61,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prBody = process.env.PR_BODY;
-            if (prBody.trim() === "No content from Llama.") {
-              console.log(" Skipping PR update because Llama response is empty.");
+            if (prBody.trim() === "No content from Llama3.3.") {
+              console.log(" Skipping PR update because Llama3.3 response is empty.");
             } else {
               console.log(" Updating PR with generated description.");
               github.rest.pulls.update({
