@@ -34,8 +34,8 @@ runs:
 
     - name: Generate PR Description
       env:
-        FASTAPI_API_KEY: ${{ secrets.FASTAPI_API_KEY }}
-        FASTAPI_API_URL: ${{ secrets.FASTAPI_API_URL }}
+        FAST_API_KEY: ${{ secrets.FAST_API_KEY }}
+        FAST_API_URL: ${{ secrets.FAST_API_URL }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python main.py --diff_file ${{ inputs.diff_file }} --output_file ${{ inputs.output_file }} --pr_file ${{ inputs.pr_file }}
