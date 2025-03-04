@@ -37,7 +37,7 @@ class Completion:
         }
         data = {
             "prompt": self.prompt,
-            "model": "deepseek-r1"
+            "model": "llama3.3"
         }
         
         try:
