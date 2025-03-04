@@ -35,7 +35,7 @@ jobs:
           FAST_API_URL:  https://ab16-129-210-115-231.ngrok-free.app/generate  # Replace with your actual ngrok URL
         run: |
           echo " Running main.py with diff_content.txt"
-          python main.py "diff_content.txt" "${{ github.event.pull_request.number }}"
+          python deepseek-r1/main.py "diff_content.txt" "${{ github.event.pull_request.number }}"
 
       - name: Capture PR Description Output
         id: read_pr_description
