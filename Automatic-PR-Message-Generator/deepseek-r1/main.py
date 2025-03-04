@@ -4,12 +4,12 @@ import requests
 import sys
 import json
 
-FASTAPI_API_URL = os.getenv("FASTAPI_API_URL")
+FAST_API_URL = os.getenv("FAST_API_URL")
 
 def generate_pr_description(diff_content, pr_number):
-    if not FASTAPI_API_URL:
-        print("❌ Error: FASTAPI_API_URL is not set.")
-        return "Error: FASTAPI_API_URL is not configured."
+    if not FAST_API_URL:
+        print("❌ Error: FAST_API_URL is not set.")
+        return "Error: FAST_API_URL is not configured."
 
     
     prompt = """
@@ -69,8 +69,8 @@ Scoring Criteria:
         return generated_text
 
     except requests.exceptions.RequestException as e:
-        print(f" Error: Failed to reach FASTAPI API - {e}")
-        return "Error: Unable to contact FASTAPI API."
+        print(f" Error: Failed to reach FAST API - {e}")
+        return "Error: Unable to contact FAST API."
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
