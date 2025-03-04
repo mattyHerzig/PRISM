@@ -8,7 +8,7 @@ FAST_API_URL = os.getenv("FAST_API_URL")
 
 def generate_pr_description(diff_content, pr_number):
     if not FAST_API_URL:
-        print("❌ Error: FAST_API_URL is not set.")
+        print("Error: FAST_API_URL is not set.")
         return "Error: FAST_API_URL is not configured."
 
     
@@ -48,9 +48,9 @@ Scoring Criteria:
 """
 
     try:
-        print(f"🔹 Sending request to FAST_API_URL: {FAST_API_URL}")
+        print(f"Sending request to FAST_API_URL: {FAST_API_URL}")
         
-        response = requests.post(FAST_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
+        response = requests.post(FAST_API_URL, json={"model": "llama3.3", "prompt": prompt})
         
         if response.status_code != 200:
             print(f" Error: Received status code {response.status_code} from FAST API")
