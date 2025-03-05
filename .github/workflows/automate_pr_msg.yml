@@ -22,7 +22,7 @@ jobs:
           
           if echo "$CHANGED_FILES" | grep -q '^deepseek-r1/'; then
             echo "MODEL=deepseek-r1" >> $GITHUB_ENV
-            echo "SCRIPT_PATH=deepseek/main.py" >> $GITHUB_ENV
+            echo "SCRIPT_PATH=deepseek-r1/main.py" >> $GITHUB_ENV
           elif echo "$CHANGED_FILES" | grep -q '^llama3.3/'; then
             echo "MODEL=llama3.3" >> $GITHUB_ENV
             echo "SCRIPT_PATH=llama3.3/main.py" >> $GITHUB_ENV
