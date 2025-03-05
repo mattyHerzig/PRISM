@@ -20,7 +20,7 @@ jobs:
           echo "Detecting changes in the PR..."
           CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
           
-          if echo "$CHANGED_FILES" | grep -q '^deepseek/'; then
+          if echo "$CHANGED_FILES" | grep -q '^deepseek-r1/'; then
             echo "MODEL=deepseek-r1" >> $GITHUB_ENV
             echo "SCRIPT_PATH=deepseek/main.py" >> $GITHUB_ENV
           elif echo "$CHANGED_FILES" | grep -q '^llama3.3/'; then
