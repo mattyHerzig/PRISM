@@ -1,0 +1,55 @@
+name: "Generate PR Description with llama3.3"
+description: "Generates a PR description using the llama3.3 and updates the PR body."
+
+author: "Sai Ram"
+inputs:
+  diff_file:
+    description: "Path to the diff file"
+    required: true
+    default: "diff.txt"
+  output_file:
+    description: "Path to the output file containing the PR body"
+    required: true
+    default: "output.txt"
+  pr_file:
+    description: "Path to the file containing PR data"
+    required: true
+    default: "pr.json"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python Environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Generate PR Description
+      env:
+        FAST_API_KEY: ${{ secrets.FAST_API_KEY }}
+        FAST_API_URL: ${{ secrets.FAST_API_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        python main.py --diff_file ${{ inputs.diff_file }} --output_file ${{ inputs.output_file }} --pr_file ${{ inputs.pr_file }}
+
+    - name: Update Pull Request Body
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const pr_body = fs.readFileSync('${{ inputs.output_file }}', 'utf8');
+          github.rest.pulls.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number,
+            body: pr_body
+          });
