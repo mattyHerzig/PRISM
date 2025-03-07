@@ -28,9 +28,6 @@ Be careful while analyzing the code. Make sure to identify all the code changes 
 
 —
 
-These are the code changes:
-PR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}.
-
 Checkboxes: 
 1. Clear Naming Conventions (Function and variable names are meaningful, self-explanatory and easy to understand.)
 2. Documentation (Code includes meaningful inline comments explaining logic and purpose.)
@@ -58,9 +55,6 @@ Be careful while analyzing the code. Make sure to identify all the code changes 
 
 —
 
-These are the code changes:
-PR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}.
-
 Checkboxes:
 1. Error Finding (No syntax, runtime and logical errors in the code.)
 2. Error Handling (Code uses `try-except` for handling exceptions properly if applicable)
@@ -86,9 +80,6 @@ The return format should be in the below json format:
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
 —
-
-These are the code changes:
-PR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}.
 
 Checkboxes:
 1. No Security Threats Code does not have injection flaws like SQL injection, Code injection, Command injection, XSS and other injections, buffer overflows, insecure data storage, improper input validation, race conditions, logic flaws, authorization issues, information leakage, denial-of-service (DoS) vulnerabilities, unpatched software, misconfigurations, and hardcoded credentials)
@@ -116,9 +107,6 @@ The return format should be in the below json format:
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
 —
-
-These are the code changes:
-PR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}.
 
 Checkboxes: 
 1. Improved Time Complexity (Code runs more efficiently than before.)
