@@ -37,7 +37,15 @@ class Completion:
         }
         data = {
             "prompt": self.prompt,
-            "model": "deepseek-r1"
+            "model": "deepseek-r1",
+            "format": {
+                "type": "object",
+                "properties": {
+                    "score": {"type": "integer"},
+                    "output": {"type": "string"}
+                },
+                "required": ["score", "output"]
+            }
         }
         
         try:
