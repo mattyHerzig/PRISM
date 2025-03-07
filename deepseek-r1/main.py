@@ -14,9 +14,9 @@ def generate_pr_description(diff_content, pr_number):
 
     prompt=f"These are the code changes: \n\nPR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}."
     
-    prompt+="""
+    prompt+=""" Analyze the given code changes and
 
-And give an overall score based on Readability, Maintainability, and Clarity. 
+1. Give an overall score based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {
