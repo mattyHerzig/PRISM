@@ -61,7 +61,7 @@ jobs:
 
       - name: Generate PR Description
         env:
-          FAST_API_URL: https://ab46-2601-647-4601-2b0-5c68-db7e-9406-2fec.ngrok-free.app/generate  # Replace with your actual ngrok URL
+          FAST_API_URL: https://2683-2601-647-4601-2b0-5c68-db7e-9406-2fec.ngrok-free.app/generate  # Replace with your actual ngrok URL
         run: |
           echo "Running ${SCRIPT_PATH} with diff_content.txt"
           python ${SCRIPT_PATH} "diff_content.txt" "${{ github.event.pull_request.number }}"
