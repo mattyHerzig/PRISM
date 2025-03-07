@@ -14,7 +14,7 @@ def generate_pr_description(diff_content, pr_number):
 
     prompt=f"These are the code changes: \n\nPR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}."
     
-    prompt += """
+    prompt+="""
 
 And give an overall score based on Readability, Maintainability, and Clarity. 
 
@@ -44,7 +44,7 @@ Scoring Criteria:
 - 1 (Poor): Code is highly unreadable.
 
 """
-    prompt += """
+    prompt+="""
     
 2. And give an overall score based on Robustness and Error handling. 
 
@@ -73,8 +73,8 @@ Scoring Criteria:
 	⁃ 2 (Moderate): A few errors found and mostly follows the checkboxes. 
 	- 1 (Poor): A lot of errors found and does not follow the checkboxes.
 
-"""
-    prompt += """
+ """
+    prompt+="""
 
 3. And give an overall score based on Security and Vulnerability. 
 The return format should be in the below json format:
@@ -104,7 +104,7 @@ Scoring Criteria:
 
 
 """
-      prompt += """
+    prompt+="""
 4. And give an overall score based on Performance and Efficiency. 
 
 The return format should be in the below json format:
