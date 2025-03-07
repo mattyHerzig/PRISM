@@ -20,19 +20,28 @@ jobs:
           echo "Detecting changes in the PR..."
           CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
           
-          if echo "$CHANGED_FILES" | grep -q '^deepseek-r1/'; then
-            echo "MODEL=deepseek-r1" >> $GITHUB_ENV
-            echo "SCRIPT_PATH=deepseek-r1/main.py" >> $GITHUB_ENV
-          elif echo "$CHANGED_FILES" | grep -q '^llama3.3/'; then
-            echo "MODEL=llama3.3" >> $GITHUB_ENV
-            echo "SCRIPT_PATH=llama3.3/main.py" >> $GITHUB_ENV
-          elif echo "$CHANGED_FILES" | grep -q '^mistral/'; then
-            echo "MODEL=mistral" >> $GITHUB_ENV
-            echo "SCRIPT_PATH=mistral/main.py" >> $GITHUB_ENV
-          else
+          MODEL=""
+          SCRIPT_PATH=""
+
+          if echo "$CHANGED_FILES" | grep -E '^deepseek/'; then
+            MODEL="deepseek-r1"
+            SCRIPT_PATH="deepseek/main.py"
+          elif echo "$CHANGED_FILES" | grep -E '^llama3.3/'; then
+            MODEL="llama3.3"
+            SCRIPT_PATH="llama3.3/main.py"
+          elif echo "$CHANGED_FILES" | grep -E '^mistral/'; then
+            MODEL="mistral"
+            SCRIPT_PATH="mistral/main.py"
+          fi
+
+          if [[ -z "$MODEL" ]]; then
             echo "No relevant folder changes detected. Skipping PR description generation."
             exit 0
           fi
+
+          echo "Selected Model: $MODEL"
+          echo "MODEL=$MODEL" >> $GITHUB_ENV
+          echo "SCRIPT_PATH=$SCRIPT_PATH" >> $GITHUB_ENV
 
       - name: Generate PR Diff Content
         run: |
