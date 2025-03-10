@@ -26,9 +26,9 @@ jobs:
           if echo "$CHANGED_FILES" | grep -E '^deepseek-r1/'; then
             MODEL="deepseek-r1"
             SCRIPT_PATH="deepseek-r1/main.py"
-          elif echo "$CHANGED_FILES" | grep -E '^llama3.3/'; then
-            MODEL="llama3.3"
-            SCRIPT_PATH="llama3.3/main.py"
+          elif echo "$CHANGED_FILES" | grep -E '^llama3.2/'; then
+            MODEL="llama3.2"
+            SCRIPT_PATH="llama3.2/main.py"
           elif echo "$CHANGED_FILES" | grep -E '^mistral/'; then
             MODEL="mistral"
             SCRIPT_PATH="mistral/main.py"
