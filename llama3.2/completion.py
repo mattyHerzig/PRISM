@@ -37,7 +37,7 @@ class Completion:
         }
         data = {
             "prompt": self.prompt,
-            "model": "llama3.3"
+            "model": "llama3.2"
         }
         
         try:
