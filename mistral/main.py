@@ -16,7 +16,7 @@ def generate_pr_description(diff_content, pr_number):
     
     prompt+=""" Analyze the given code changes and
 
-1. Give an overall score based on Readability, Maintainability, and Clarity. 
+1. Give an overall score for updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {
@@ -43,7 +43,7 @@ Scoring Criteria:
 """
     prompt+="""
     
-2. And give an overall score based on Robustness and Error handling. 
+2. And give an overall score for updated code based on Robustness and Error handling. 
 
 The return format should be in the below json format:
 {
@@ -70,7 +70,7 @@ Scoring Criteria:
  """
     prompt+="""
 
-3. And give an overall score based on Security and Vulnerability. 
+3. And give an overall score for updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
 {
     "security_score": “<score within 1-3>”,
@@ -96,7 +96,7 @@ Scoring Criteria:
 
 """
     prompt+="""
-4. And give an overall score based on Performance and Efficiency. 
+4. And give an overall score for updated code based on Performance and Efficiency. 
 
 The return format should be in the below json format:
 {
