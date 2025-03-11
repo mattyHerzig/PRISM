@@ -1,8 +1,14 @@
-import numpy as np
-
-a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-b = np.array([[9, 8, 7], [6, 5, 4], [3, 2, 1]])
-
-res = a + b
-
-print(res)
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        if(s.length()==0) return true;
+      int left=0;
+      int right=0;
+      while(right<t.length()){
+        if(s.charAt(left)==t.charAt(right)){
+            left++;
+        }
+        right++;
+      }
+      return (left==s.length());
+    }
+}
