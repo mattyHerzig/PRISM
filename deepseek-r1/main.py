@@ -64,8 +64,8 @@ Checkboxes:
 
 Scoring Criteria:
 	⁃ 3 (Excellent): No errors found and follows all the checkboxes.
-	⁃ 2 (Moderate): A few errors found and mostly follows the checkboxes. 
-	- 1 (Poor): A lot of errors found and does not follow the checkboxes.
+	⁃ 2 (Moderate): No errors found and does not follow all the checkboxes. 
+	- 1 (Poor): A lot of errors found and does not follow all the checkboxes.
 
  """
     prompt+="""
