@@ -21,14 +21,115 @@ def query_chatgpt(prompt):
     return response.choices[0].message['content'].strip()
 
 def generate_pr_description(diff_content, pr_number):
+    
     prompt=f"These are the code changes: \n\nPR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}."
     
-    # Load scoring instructions (same structure as before)
-    with open('scoring_prompt.txt', 'r') as f:
-        scoring_prompt = f.read()
-    
-    full_prompt = prompt + scoring_prompt
+    prompt+=""" Analyze the given code changes and
 
+1. Give an overall score for updated code based on Readability, Maintainability, and Clarity. 
+
+The return format should be in the below json format:
+{
+    "readability_score": “<score within 1-3>”,
+    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+} 
+
+Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
+
+—
+
+Checkboxes: 
+1. Clear Naming Conventions (Function and variable names are meaningful, self-explanatory and easy to understand.)
+2. Documentation (Code includes meaningful inline comments explaining logic and purpose.)
+3. Formatting & Styling (Code follows consistent indentation and spacing.)
+4. Maintainability (Code is easy to extend or modify.)
+5. Code Length (Logic is broken down into simpler parts.)
+
+Scoring Criteria:
+- 3 (Excellent): Code meets all readability, maintainability, and clarity standards. Naming is clear, documentation is informative, formatting is consistent, code structure is easy to modify, and functions are not excessively long.  
+- 2 (Moderate): Code is largely readable and maintainable but has a scope for improvement.  
+- 1 (Poor): Code is highly unreadable.
+
+"""
+    prompt+="""
+    
+2. And give an overall score for updated code based on Robustness and Error handling. 
+
+The return format should be in the below json format:
+{
+    "robustness_score": “<score within 1-3>”,
+    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+} 
+
+Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
+
+—
+
+Checkboxes:
+1. Error Finding (No syntax, runtime and logical errors in the code.)
+2. Error Handling (Code uses `try-except` for handling exceptions properly if applicable)
+3. Edge Cases (Correctly handles edge cases like extreme, unusual, or unexpected inputs)
+4. Input Validation (Code checks for invalid inputs)
+5. No Infinite Loops (Code ensures that loops have a proper termination condition to avoid endless execution if found)
+
+Scoring Criteria:
+	⁃ 3 (Excellent): No errors found and follows all the checkboxes.
+	⁃ 2 (Moderate): No errors found and does not follow all the checkboxes. 
+	- 1 (Poor): A lot of errors found and does not follow all the checkboxes.
+
+ """
+    prompt+="""
+
+3. And give an overall score for updated code based on Security and Vulnerability. 
+The return format should be in the below json format:
+{
+    "security_score": “<score within 1-3>”,
+    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+} 
+
+Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
+
+—
+
+Checkboxes:
+1. No Security Threats Code does not have injection flaws like SQL injection, Code injection, Command injection, XSS and other injections, buffer overflows, insecure data storage, improper input validation, race conditions, logic flaws, authorization issues, information leakage, denial-of-service (DoS) vulnerabilities, unpatched software, misconfigurations, and hardcoded credentials)
+2. No Authentication & Authorization issues
+3. No Hard Coded Secrets (There isn’t any hardcoded credentials, API keys, or sensitive information)
+4. No Secure Dependencies (There isn’t outdated and insecure third-party libraries)
+5. Proper Session Management (Session expiration is perfect and handle token handling securely)
+
+Scoring Criteria:
+	⁃ 3 (Excellent): No security or vulnerability issues and follows all the checkboxes.
+	⁃ 2 (Moderate): A few security or vulnerability issues and mostly follows checkboxes.
+	⁃ 1 (Poor): A lot of security and vulnerability issues and does not follows all checkboxes.
+
+
+"""
+    prompt+="""
+4. And give an overall score for updated code based on Performance and Efficiency. 
+
+The return format should be in the below json format:
+{
+    "performance_score": “<score within 1-3>”,
+    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+} 
+
+Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
+
+—
+
+Checkboxes: 
+1. Improved Time Complexity (Code runs more efficiently than before.)
+2. Improved Space Complexity (Code uses less memory than before.)
+3. No Redundant Computation (No unnecessary and unused loops, recalculations, or duplicate operations, methods, and variables)
+
+
+Scoring Criteria:
+- 3 (Excellent): The code has improved either time complexity or space complexity and there are no unnecessary computations. 
+- 2 (Moderate): The code has not improved time or space complexity and slightly follows checkboxes.
+- 1 (Poor): The code reduces the time or space complexity and does not follow any of the checkboxes.
+"""
+    
     try:
         generated_text = query_chatgpt(full_prompt)
         if not generated_text.strip():
@@ -41,7 +142,6 @@ def generate_pr_description(diff_content, pr_number):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python main.py <diff_file_path> <pr_number>")
         sys.exit(1)
 
     diff_file_path = sys.argv[1]
