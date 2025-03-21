@@ -1,1 +1,1 @@
-"Automatic Pr Message Generator"
+"PRISM"
