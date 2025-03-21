@@ -32,6 +32,12 @@ jobs:
           elif echo "$CHANGED_FILES" | grep -E '^mistral/'; then
             MODEL="mistral"
             SCRIPT_PATH="mistral/main.py"
+          elif echo "$CHANGED_FILES" | grep -E '^chatgpt/'; then
+            MODEL="chatgpt"
+            SCRIPT_PATH="chatgpt/main.py"
+          elif echo "$CHANGED_FILES" | grep -E '^claude/'; then
+            MODEL="claude"
+            SCRIPT_PATH="claude/main.py"
           fi
 
           if [[ -z "$MODEL" ]]; then
@@ -57,11 +63,15 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests  # Install requests library
+          pip install requests openai anthropic
+          
 
       - name: Generate PR Description
         env:
-          FAST_API_URL: https://c08c-129-210-115-225.ngrok-free.app/generate  # Replace with your actual ngrok URL
+          FAST_API_URL: https://c08c-129-210-115-225.ngrok-free.app/generate # your ngrok URL
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          
         run: |
           echo "Running ${SCRIPT_PATH} with diff_content.txt"
           python ${SCRIPT_PATH} "diff_content.txt" "${{ github.event.pull_request.number }}"
