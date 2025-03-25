@@ -2,6 +2,7 @@
   "name": "scores-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Sairammotupalli.github.io/PRISM/scores-dashboard",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -36,8 +37,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ], 
-
-    "homepage": "https://Sairammotupalli.github.io/PRISM/scores-dashboard"
+    ]
   }
 }
