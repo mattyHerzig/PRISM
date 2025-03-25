@@ -12,6 +12,6 @@ This browser extension adds a **PR Scores** tab to the top of any GitHub reposit
 2. Go to `chrome://extensions` and enable **Developer Mode**
 3. Click **Load Unpacked**
 4. Select the `pr-scores-extension/` folder
-5. Visit any GitHub repo — you'll see a **PR Scores** tab
+5. you'll see a **PR Scores** tab in your repository.
 
 It links to the https://{username}.github.io/PRISM
