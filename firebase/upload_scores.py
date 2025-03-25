@@ -12,15 +12,11 @@ def extract_scores(text):
         "performance_score": None
     }
 
-    try:
-        # Try to parse full JSON object from the string
-        json_match = re.search(r'\{[\s\S]*?"performance_score":\s*\d[\s\S]*?\}', text)
-        if json_match:
-            parsed = json.loads(json_match.group(0))
-            for key in scores.keys():
-                scores[key] = parsed.get(key)
-    except Exception as e:
-        print(f" Failed to parse JSON from PR body: {e}")
+    for key in scores:
+        # Match: "readability_score": 1  or  "readability_score": "1"
+        match = re.search(rf'"{key}"\s*:\s*["“]?(\d)["”]?', text)
+        if match:
+            scores[key] = int(match.group(1))
 
     return scores
 
