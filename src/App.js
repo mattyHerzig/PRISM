@@ -52,19 +52,21 @@ function App() {
   });
 
   return (
+    
     <div className="github-wrapper">
-      <div className="github-header">
-        <h2>Pull Request Scores</h2>
-      </div>
+    <div className="back-wrapper">
+      <a
+        href="https://github.com/Sairammotupalli/PRISM"
+        className="back-button"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ← Back
+      </a>
+    </div>
+
     <div className="github-header">
       <h2>Pull Request Scores</h2>
-        <a
-         href="https://github.com/Sairammotupalli/PRISM"
-         className="back-button"
-         target="_blank"
-         rel="noopener noreferrer">
-    ← Back
-  </a>
   </div>
 
       <div className="github-body">
@@ -98,16 +100,16 @@ function App() {
           return (
             <div key={user} className="user-section">
               <div className="user-header">
-                {user}
+                Contributor: {user}
                 <span className="overall-score">Overall Score: {calculateOverallScore(data)}</span>
               </div>
 
               <div className="pr-list">
                 {prEntries.map(([prId, scores]) => (
                   <div key={prId} className="pr-row">
-                    <div className="pr-title">Update {prId}.py</div>
+                    <div className="pr-title">Pull Request : {prId}</div>
                     <div className="pr-meta">
-                      Clarity: {scores.readability_score} |  Robustness: {scores.robustness_score}  | Efficiency: {scores.performance_score}  | Security: {scores.security_score}
+                     Clarity: {scores.readability_score} |  Robustness: {scores.robustness_score}  | Efficiency: {scores.performance_score}  | Security: {scores.security_score}
                     </div>
                     <div className="pr-score">{scores.model}</div>
                   </div>
