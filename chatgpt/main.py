@@ -15,7 +15,6 @@ def query_chatgpt(prompt):
     response = openai.ChatCompletion.create(
         model="gpt-4-turbo",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=1500,
         temperature=0.3
     )
     return response.choices[0].message['content'].strip()
