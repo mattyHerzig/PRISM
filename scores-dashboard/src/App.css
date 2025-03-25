@@ -1,26 +1,76 @@
-.App {
+/* App.css */
+.github-wrapper {
   font-family: 'Segoe UI', sans-serif;
+  background-color: #f6f8fa;
   padding: 2rem;
-  background: #f9f9f9;
+  color: #24292f;
 }
 
-.card {
-  background: white;
-  padding: 1.2rem;
+.github-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.pr {
-  font-size: 0.95rem;
-  margin-left: 1rem;
+.github-body {
+  background: white;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.user-section {
+  margin-bottom: 2rem;
+}
+
+.user-header {
+  font-size: 1.2rem;
+  font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.cumulative {
-  background: #f0f0f0;
-  padding: 0.7rem;
-  border-radius: 8px;
+.score-summary {
+  font-size: 0.95rem;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  padding: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.pr-list {
+  border-top: 1px solid #d0d7de;
+}
+
+.pr-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d0d7de;
+  padding: 0.8rem 0;
+}
+
+.pr-title {
+  font-weight: 500;
+  color: #0969da;
+}
+
+.pr-meta {
+  font-size: 0.85rem;
+  color: #57606a;
+}
+
+.pr-score {
+  font-size: 0.85rem;
+  color: #57606a;
+  white-space: nowrap;
 }
