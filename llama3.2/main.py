@@ -11,26 +11,24 @@ def generate_pr_description(diff_content, pr_number):
         print("Error: FAST_API_URL is not set.")
         return "Error: FAST_API_URL is not configured."
 
-    
+
     prompt=f"These are the code changes: \n\nPR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}."
     
     prompt+=""" Analyze the given code changes and
 
-1. Now, Analyze the given code changes and 
-
-Give an overall score for updated code based on Readability, Maintainability, and Clarity. 
+1. Give an overall score for updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
-{{
-    "readability_score": “<score>”,
+{
+    "readability_score": “<score within 1-3>”,
     "output": "<text explanation of the reason for the scoring and suggested improvements>”
-}}
+} 
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
 —
 
-Checkboxes:
+Checkboxes: 
 1. Clear Naming Conventions (Function and variable names are meaningful, self-explanatory and easy to understand.)
 2. Documentation (Code includes meaningful inline comments explaining logic and purpose.)
 3. Formatting & Styling (Code follows consistent indentation and spacing.)
@@ -38,22 +36,20 @@ Checkboxes:
 5. Code Length (Logic is broken down into simpler parts.)
 
 Scoring Criteria:
-readability_score: 1 (Excellent) Code meets all readability, maintainability, and clarity standards. Naming is clear, documentation is informative, formatting is consistent, code structure is easy to modify, and functions are not excessively long.  
-readability_score: 0 (Moderate) Code is largely readable and maintainable but has a scope for improvement.  
-readability_score: -1 (Poor) Code is highly unreadable.
+- 3 (Excellent): Code meets all readability, maintainability, and clarity standards. Naming is clear, documentation is informative, formatting is consistent, code structure is easy to modify, and functions are not excessively long.  
+- 2 (Moderate): Code is largely readable and maintainable but has a scope for improvement.  
+- 1 (Poor): Code is highly unreadable.
 
 """
     prompt+="""
     
-2. Now, Analyze the given code changes and 
-
-give an overall score for updated code based on Robustness and Error handling. 
+2. And give an overall score for updated code based on Robustness and Error handling. 
 
 The return format should be in the below json format:
-{{
-    "robustness_score": “<score>”,
+{
+    "robustness_score": “<score within 1-3>”,
     "output": "<text explanation of the reason for the scoring and suggested improvements>”
-}}
+} 
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
@@ -67,20 +63,19 @@ Checkboxes:
 5. No Infinite Loops (Code ensures that loops have a proper termination condition to avoid endless execution if found)
 
 Scoring Criteria:
-	robustness_score: 1 (Excellent) No errors found and follows all the checkboxes.
-	robustness_score: 0 (Moderate) No errors found and does not follow all the checkboxes. 
-	robustness_score: - 1 (Poor) A lot of errors found and does not follow all the checkboxes.
+	⁃ 3 (Excellent): No errors found and follows all the checkboxes.
+	⁃ 2 (Moderate): No errors found and does not follow all the checkboxes. 
+	- 1 (Poor): A lot of errors found and does not follow all the checkboxes.
+
  """
     prompt+="""
 
-3. Now, Analyze the given code changes and 
-
-give an overall score for updated code based on Security and Vulnerability. 
+3. And give an overall score for updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
-{{
-    "security_score": “<score>”,
+{
+    "security_score": “<score within 1-3>”,
     "output": "<text explanation of the reason for the scoring and suggested improvements>”
-}}
+} 
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
@@ -89,49 +84,45 @@ Be careful while analyzing the code. Make sure to identify all the code changes 
 Checkboxes:
 1. No Security Threats Code does not have injection flaws like SQL injection, Code injection, Command injection, XSS and other injections, buffer overflows, insecure data storage, improper input validation, race conditions, logic flaws, authorization issues, information leakage, denial-of-service (DoS) vulnerabilities, unpatched software, misconfigurations, and hardcoded credentials)
 2. No Authentication & Authorization issues
-3. No Hard Coded Secrets (There is not  any hardcoded credentials, API keys, or sensitive information)
-4. No Secure Dependencies (There is not outdated and insecure third-party libraries)
+3. No Hard Coded Secrets (There isn’t any hardcoded credentials, API keys, or sensitive information)
+4. No Secure Dependencies (There isn’t outdated and insecure third-party libraries)
 5. Proper Session Management (Session expiration is perfect and handle token handling securely)
 
 Scoring Criteria:
-	security_score: 1 (Excellent) No security or vulnerability issues and follows all the checkboxes.
-	security_score: 0 (Moderate) A few security or vulnerability issues and mostly follows checkboxes.
-	security_score: -1 (Poor) A lot of security and vulnerability issues and does not follows all checkboxes.
-"""
-	
-    prompt+="""
-    
-4. Now, Analyze the given code changes and 
+	⁃ 3 (Excellent): No security or vulnerability issues and follows all the checkboxes.
+	⁃ 2 (Moderate): A few security or vulnerability issues and mostly follows checkboxes.
+	⁃ 1 (Poor): A lot of security and vulnerability issues and does not follows all checkboxes.
 
-give an overall score for updated code based on Performance and Efficiency. 
+
+"""
+    prompt+="""
+4. And give an overall score for updated code based on Performance and Efficiency. 
 
 The return format should be in the below json format:
-{{
-    "performance_score": “<score>”,
+{
+    "performance_score": “<score within 1-3>”,
     "output": "<text explanation of the reason for the scoring and suggested improvements>”
-}}
+} 
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
 
 —
 
-Checkboxes:
+Checkboxes: 
 1. Improved Time Complexity (Code runs more efficiently than before.)
 2. Improved Space Complexity (Code uses less memory than before.)
 3. No Redundant Computation (No unnecessary and unused loops, recalculations, or duplicate operations, methods, and variables)
 
 
 Scoring Criteria:
-performance_score: 1 (Excellent) The code has improved either time complexity or space complexity and there are no unnecessary computations. 
-performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
-performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
-
+- 3 (Excellent): The code has improved either time complexity or space complexity and there are no unnecessary computations. 
+- 2 (Moderate): The code has not improved time or space complexity and slightly follows checkboxes.
+- 1 (Poor): The code reduces the time or space complexity and does not follow any of the checkboxes.
 """
-
     try:
-        print(f"Sending request to FAST_API_URL: {FAST_API_URL}")
+        print(f" Sending request to FAST_API_URL: {FAST_API_URL}")
         
-        response = requests.post(FAST_API_URL, json={"model": "llama3.2", "prompt": prompt})
+        response = requests.post(FAST_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
         
         if response.status_code != 200:
             print(f" Error: Received status code {response.status_code} from FAST API")
@@ -141,11 +132,11 @@ performance_score: -1 (Poor) The code reduces the time or space complexity and d
         print(" Debug: Full response from FastAPI:", json.dumps(response_json, indent=2))
 
         # Extract response text safely
-        generated_text = response_json.get("response", "No content from llama3.2.")
+        generated_text = response_json.get("response", "No content from deepseek.")
         
         if not generated_text.strip():
             print("Warning: FASTAPI API returned an empty response.")
-            return "No content from llama3.2"
+            return "No content from deepseek."
 
         return generated_text
 
