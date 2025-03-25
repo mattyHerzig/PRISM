@@ -13,11 +13,14 @@ def extract_scores(text):
     }
 
     for key in scores:
-        match = re.search(rf'"{key}"\s*:\s*["“]?(\d)["”]?', text)
-        if match:
-            scores[key] = int(match.group(1))
+     label = key.replace("_score", "")  # e.g., "readability"
+     pattern = rf'{label}\s*(score)?\s*[:=]\s*["“]?(\d)["”]?'
+     match = re.search(pattern, text, re.IGNORECASE)
+     if match:
+        scores[key] = int(match.group(2))
 
     return scores
+
 
 def update_firebase(user, pr_id, new_scores, firebase_url, model):
     base_url = f"{firebase_url}/users/{user}"
