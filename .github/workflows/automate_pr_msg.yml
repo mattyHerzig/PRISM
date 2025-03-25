@@ -118,4 +118,4 @@ jobs:
           GITHUB_USER: ${{ github.event.pull_request.user.login }}
         run: |
           echo "Uploading scores to Firebase..."
-          python3 firebase/upload_scores.py pr_description.txt "$GITHUB_USER" "${{ github.event.pull_request.number }}"
+          python3 firebase/upload_scores.py pr_description.txt "$GITHUB_USER" "${{ github.event.pull_request.number }}" "$MODEL"
