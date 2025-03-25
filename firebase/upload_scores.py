@@ -13,7 +13,6 @@ def extract_scores(text):
     }
 
     for key in scores:
-        # Match: "readability_score": 1  or  "readability_score": "1"
         match = re.search(rf'"{key}"\s*:\s*["“]?(\d)["”]?', text)
         if match:
             scores[key] = int(match.group(1))
