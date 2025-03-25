@@ -14,7 +14,6 @@ anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
 def query_claude(prompt):
     response = anthropic_client.messages.create(
         model="claude-3-sonnet-20240229",
-        max_tokens=1500,
         temperature=0.3,
         messages=[{"role": "user", "content": prompt}]
     )
