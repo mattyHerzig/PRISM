@@ -19,15 +19,38 @@ def extract_scores(text):
 
     return scores
 
-def store_scores_by_pr(user, pr_id, new_scores, firebase_url):
-    url = f"{firebase_url}/users/{user}/pr_{pr_id}.json"
-    print(f"Uploading scores to: {url}")
+def update_firebase(user, pr_id, new_scores, firebase_url):
+    base_url = f"{firebase_url}/users/{user}"
+    pr_url = f"{base_url}/pr_{pr_id}.json"
+    cumulative_url = f"{base_url}/cumulative_score.json"
 
-    response = requests.put(url, json=new_scores)
-    if response.ok:
-        print(f"Scores for PR #{pr_id} uploaded successfully under {user}")
+    # Upload per-PR scores
+    print(f"Uploading scores to: {pr_url}")
+    pr_response = requests.put(pr_url, json=new_scores)
+    if pr_response.ok:
+        print(f"Scores for PR #{pr_id} uploaded.")
     else:
-        print(f"Failed to upload scores: {response.text}")
+        print(f"Failed to upload PR scores: {pr_response.text}")
+        return
+
+    # Fetch existing cumulative scores
+    existing = requests.get(cumulative_url).json() or {}
+    pr_count = existing.get("pr_count", 0)
+
+    updated = {}
+    for key in new_scores:
+        prev_val = existing.get(key, 0)
+        updated[key] = (prev_val * pr_count + new_scores[key]) / (pr_count + 1)
+
+    updated["pr_count"] = pr_count + 1
+
+    # Upload updated cumulative score
+    print(f"📡 Updating cumulative score at: {cumulative_url}")
+    cum_response = requests.put(cumulative_url, json=updated)
+    if cum_response.ok:
+        print("Cumulative score updated.")
+    else:
+        print(f"Failed to update cumulative score: {cum_response.text}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
@@ -50,9 +73,9 @@ if __name__ == "__main__":
     print(pr_text[:300])
 
     scores = extract_scores(pr_text)
-    print(f" Extracted Scores: {scores}")
+    print(f"Extracted Scores: {scores}")
 
     if all(v is not None for v in scores.values()):
-        store_scores_by_pr(user, pr_id, scores, firebase_url)
+        update_firebase(user, pr_id, scores, firebase_url)
     else:
-        print(" Not all scores found. Skipping Firebase upload.")
+        print("Not all scores found. Skipping Firebase upload.")
