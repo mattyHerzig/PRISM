@@ -1,0 +1,26 @@
+.App {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background: #f9f9f9;
+}
+
+.card {
+  background: white;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pr {
+  font-size: 0.95rem;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cumulative {
+  background: #f0f0f0;
+  padding: 0.7rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
