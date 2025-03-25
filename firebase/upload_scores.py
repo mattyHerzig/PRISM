@@ -57,7 +57,7 @@ def update_firebase(user, pr_id, new_scores, firebase_url, model):
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-       print("Usage: python upload_scores.py <pr_message_file> <github_user> <pr_id> <model>")
+        print("Usage: python upload_scores.py <pr_message_file> <github_user> <pr_id> <model>")
         sys.exit(1)
 
     pr_file = sys.argv[1]
