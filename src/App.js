@@ -56,6 +56,16 @@ function App() {
       <div className="github-header">
         <h2>Pull Request Scores</h2>
       </div>
+    <div className="github-header">
+      <h2>Pull Request Scores</h2>
+        <a
+         href="https://github.com/Sairammotupalli/PRISM"
+         className="back-button"
+         target="_blank"
+         rel="noopener noreferrer">
+    ← Back
+  </a>
+  </div>
 
       <div className="github-body">
         <div className="controls-bar">
