@@ -68,7 +68,7 @@ jobs:
 
       - name: Generate PR Description
         env:
-          FAST_API_URL: https://c08c-129-210-115-225.ngrok-free.app/generate # your ngrok URL
+          FAST_API_URL: https://af99-2601-647-4601-2b0-ac9c-48d4-7757-391.ngrok-free.app/generate # your ngrok URL
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           
