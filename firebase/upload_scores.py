@@ -45,7 +45,7 @@ def update_firebase(user, pr_id, new_scores, firebase_url):
     updated["pr_count"] = pr_count + 1
 
     # Upload updated cumulative score
-    print(f"📡 Updating cumulative score at: {cumulative_url}")
+    print(f" Updating cumulative score at: {cumulative_url}")
     cum_response = requests.put(cumulative_url, json=updated)
     if cum_response.ok:
         print("Cumulative score updated.")
