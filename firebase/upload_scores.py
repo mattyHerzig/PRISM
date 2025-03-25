@@ -24,12 +24,12 @@ def update_firebase(user, pr_id, new_scores, firebase_url, model):
     pr_url = f"{base_url}/pr_{pr_id}.json"
     cumulative_url = f"{base_url}/cumulative_score.json"
 
-    # ➕ Add model to PR data
+
     pr_data = new_scores.copy()
     pr_data["model"] = model
 
     # Upload per-PR scores
-    print(f"📡 Uploading scores to: {pr_url}")
+    print(f" Uploading scores to: {pr_url}")
     pr_response = requests.put(pr_url, json=pr_data)
     if pr_response.ok:
         print(f" Scores for PR #{pr_id} uploaded.")
@@ -57,12 +57,13 @@ def update_firebase(user, pr_id, new_scores, firebase_url, model):
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Usage: python upload_scores.py <pr_message_file> <github_user> <pr_id>")
+       print("Usage: python upload_scores.py <pr_message_file> <github_user> <pr_id> <model>")
         sys.exit(1)
 
     pr_file = sys.argv[1]
     user = sys.argv[2]
     pr_id = sys.argv[3]
+    model = sys.argv[4]
     firebase_url = os.getenv("FIREBASE_URL")
 
     if not firebase_url:
