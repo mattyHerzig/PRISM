@@ -80,6 +80,6 @@ if __name__ == "__main__":
     print(f"Extracted Scores: {scores}")
 
     if all(v is not None for v in scores.values()):
-        update_firebase(user, pr_id, scores, firebase_url)
+        update_firebase(user, pr_id, scores, firebase_url,model)
     else:
         print("Not all scores found. Skipping Firebase upload.")
