@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="github-wrapper">
       <div className="github-header">
-        <h2>🔢 Cumulative Score</h2>
+        <h2>📋 Pull Request Scores</h2>
       </div>
 
       <div className="github-body">
@@ -39,13 +39,6 @@ function App() {
         {Object.entries(users).map(([user, data]) => (
           <div key={user} className="user-section">
             <div className="user-header">{user}</div>
-            <div className="score-summary">
-              📖 {data.cumulative_score?.readability_score?.toFixed(2)} &nbsp;
-              ⚙️ {data.cumulative_score?.robustness_score?.toFixed(2)} &nbsp;
-              🚀 {data.cumulative_score?.performance_score?.toFixed(2)} &nbsp;
-              🔐 {data.cumulative_score?.security_score?.toFixed(2)} &nbsp;
-              🧮 PRs: {data.cumulative_score?.pr_count}
-            </div>
 
             <div className="pr-list">
               {Object.entries(data)
@@ -66,4 +59,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
