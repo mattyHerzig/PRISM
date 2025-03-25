@@ -19,21 +19,25 @@ def extract_scores(text):
 
     return scores
 
-def update_firebase(user, pr_id, new_scores, firebase_url):
+def update_firebase(user, pr_id, new_scores, firebase_url, model):
     base_url = f"{firebase_url}/users/{user}"
     pr_url = f"{base_url}/pr_{pr_id}.json"
     cumulative_url = f"{base_url}/cumulative_score.json"
 
+    # ➕ Add model to PR data
+    pr_data = new_scores.copy()
+    pr_data["model"] = model
+
     # Upload per-PR scores
-    print(f"Uploading scores to: {pr_url}")
-    pr_response = requests.put(pr_url, json=new_scores)
+    print(f"📡 Uploading scores to: {pr_url}")
+    pr_response = requests.put(pr_url, json=pr_data)
     if pr_response.ok:
-        print(f"Scores for PR #{pr_id} uploaded.")
+        print(f" Scores for PR #{pr_id} uploaded.")
     else:
-        print(f"Failed to upload PR scores: {pr_response.text}")
+        print(f" Failed to upload PR scores: {pr_response.text}")
         return
 
-    # Fetch existing cumulative scores
+    # Update cumulative score
     existing = requests.get(cumulative_url).json() or {}
     pr_count = existing.get("pr_count", 0)
 
@@ -44,11 +48,10 @@ def update_firebase(user, pr_id, new_scores, firebase_url):
 
     updated["pr_count"] = pr_count + 1
 
-    # Upload updated cumulative score
-    print(f" Updating cumulative score at: {cumulative_url}")
+    print(f"Updating cumulative score at: {cumulative_url}")
     cum_response = requests.put(cumulative_url, json=updated)
     if cum_response.ok:
-        print("Cumulative score updated.")
+        print(" Cumulative score updated.")
     else:
         print(f"Failed to update cumulative score: {cum_response.text}")
 
