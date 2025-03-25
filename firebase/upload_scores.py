@@ -19,52 +19,40 @@ def extract_scores(text):
 
     return scores
 
-def update_firebase(user, new_scores, firebase_url):
-    url = f"{firebase_url}/users/{user}.json"
+def store_scores_by_pr(user, pr_id, new_scores, firebase_url):
+    url = f"{firebase_url}/users/{user}/pr_{pr_id}.json"
+    print(f"Uploading scores to: {url}")
 
-    try:
-        response = requests.get(url)
-        if not response.ok:
-            print("Failed to fetch user data from Firebase.")
-            return
-
-        existing = response.json() or {}
-        current_count = existing.get("pr_count", 0)
-
-        updated = {}
-        for key in new_scores:
-            if new_scores[key] is not None:
-                prev_val = existing.get(key, 0)
-                updated[key] = (prev_val * current_count + new_scores[key]) / (current_count + 1)
-            else:
-                updated[key] = existing.get(key, 0)
-
-        updated["pr_count"] = current_count + 1
-
-        put_response = requests.put(url, json=updated)
-        if put_response.ok:
-            print(f"Uploaded scores for {user}")
-        else:
-            print(f"Failed to update scores: {put_response.text}")
-    
-    except Exception as e:
-        print(f"Error updating Firebase: {e}")
+    response = requests.put(url, json=new_scores)
+    if response.ok:
+        print(f"Scores for PR #{pr_id} uploaded successfully under {user}")
+    else:
+        print(f"Failed to upload scores: {response.text}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python upload_scores.py <pr_message_file> <github_user>")
+    if len(sys.argv) < 4:
+        print("Usage: python upload_scores.py <pr_message_file> <github_user> <pr_id>")
         sys.exit(1)
 
-    with open(sys.argv[1], 'r') as f:
-        pr_text = f.read()
-
+    pr_file = sys.argv[1]
     user = sys.argv[2]
+    pr_id = sys.argv[3]
     firebase_url = os.getenv("FIREBASE_URL")
 
     if not firebase_url:
         print("FIREBASE_URL is not set.")
         sys.exit(1)
 
+    with open(pr_file, 'r') as f:
+        pr_text = f.read()
+
+    print("PR body snippet:")
+    print(pr_text[:300])
+
     scores = extract_scores(pr_text)
-    print(f"Extracted Scores: {scores}")
-    update_firebase(user, scores, firebase_url)
+    print(f" Extracted Scores: {scores}")
+
+    if all(v is not None for v in scores.values()):
+        store_scores_by_pr(user, pr_id, scores, firebase_url)
+    else:
+        print(" Not all scores found. Skipping Firebase upload.")
