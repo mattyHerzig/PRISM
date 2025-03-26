@@ -14,47 +14,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect Modified Folder
-        id: detect-folder
-        run: |
-          echo "Detecting changes in the PR..."
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
-          
-          MODEL=""
-          SCRIPT_PATH=""
-
-          if echo "$CHANGED_FILES" | grep -E '^deepseek-r1/'; then
-            MODEL="deepseek-r1"
-            SCRIPT_PATH="deepseek-r1/main.py"
-          elif echo "$CHANGED_FILES" | grep -E '^llama3.2/'; then
-            MODEL="llama3.2"
-            SCRIPT_PATH="llama3.2/main.py"
-          elif echo "$CHANGED_FILES" | grep -E '^mistral/'; then
-            MODEL="mistral"
-            SCRIPT_PATH="mistral/main.py"
-          elif echo "$CHANGED_FILES" | grep -E '^chatgpt/'; then
-            MODEL="chatgpt"
-            SCRIPT_PATH="chatgpt/main.py"
-          elif echo "$CHANGED_FILES" | grep -E '^claude/'; then
-            MODEL="claude"
-            SCRIPT_PATH="claude/main.py"
-          fi
-
-          if [[ -z "$MODEL" ]]; then
-            echo "No relevant folder changes detected. Skipping PR description generation."
-            exit 0
-          fi
-
-          echo "Selected Model: $MODEL"
-          echo "MODEL=$MODEL" >> $GITHUB_ENV
-          echo "SCRIPT_PATH=$SCRIPT_PATH" >> $GITHUB_ENV
-
-      - name: Generate PR Diff Content
-        run: |
-          echo "Running git diff between the PR branch and main..."
-          git diff origin/main...HEAD > diff_content.txt
-          echo "Diff content saved to diff_content.txt"
-
       - name: Set up Python Environment
         uses: actions/setup-python@v4
         with:
@@ -64,17 +23,25 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests openai anthropic
-          
 
-      - name: Generate PR Description
+      - name: Generate PR Diff Content
+        run: |
+          echo "Running git diff between the PR branch and main..."
+          git fetch origin main
+          git diff origin/main...HEAD > diff_content.txt
+          echo "Diff content saved to diff_content.txt"
+
+      - name: Select Model
+        run: |
+          python LLM_Models/select_model.py
+
+      - name: Run Model Dispatcher
         env:
-          FAST_API_URL: https://b751-2601-647-4601-2b0-ac9c-48d4-7757-391.ngrok-free.app/generate # your ngrok URL
+          FAST_API_URL: https://b751-2601-647-4601-2b0-ac9c-48d4-7757-391.ngrok-free.app/generate
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          
         run: |
-          echo "Running ${SCRIPT_PATH} with diff_content.txt"
-          python ${SCRIPT_PATH} "diff_content.txt" "${{ github.event.pull_request.number }}"
+          python LLM_Models/main_dispatcher.py diff_content.txt "${{ github.event.pull_request.number }}"
 
       - name: Capture PR Description Output
         id: read_pr_description
@@ -111,11 +78,11 @@ jobs:
                 body: prBody
               });
             }
-            
+
       - name: Upload Scores to Firebase
         env:
           FIREBASE_URL: ${{ secrets.FIREBASE_URL }}
           GITHUB_USER: ${{ github.event.pull_request.user.login }}
         run: |
           echo "Uploading scores to Firebase..."
-          python3 firebase/upload_scores.py pr_description.txt "$GITHUB_USER" "${{ github.event.pull_request.number }}" "$MODEL"
+          python3 firebase/upload_scores.py pr_description.txt "$GITHUB_USER" "${{ github.event.pull_request.number }}"
