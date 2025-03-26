@@ -1,7 +1,7 @@
 import json
 
 MODEL_MAP = {
-    "deepseek-r1": "LLM_Models/deepseek_main.py",
+    "deepseek-r1": "LLM_Models/deepseek-r1_main.py",
     "llama3.2": "LLM_Models/llama3.2_main.py",
     "mistral": "LLM_Models/mistral_main.py",
     "chatgpt": "LLM_Models/chatgpt_main.py",
