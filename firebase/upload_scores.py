@@ -31,7 +31,6 @@ def update_firebase(user, pr_id, new_scores, firebase_url, model):
     pr_data = new_scores.copy()
     pr_data["model"] = model
 
-    # Upload per-PR scores
     print(f" Uploading scores to: {pr_url}")
     pr_response = requests.put(pr_url, json=pr_data)
     if pr_response.ok:
