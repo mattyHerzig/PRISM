@@ -11,9 +11,9 @@ def generate_pr_description(diff_content, pr_number):
         print("Error: FAST_API_URL is not set.")
         return "Error: FAST_API_URL is not configured."
 
-    prompt=""" 
+    prompt="""
 
-1. Analyze and give an overall score for updated code based on Readability, Maintainability, and Clarity. 
+1.Analyze and give an overall score for updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {{
