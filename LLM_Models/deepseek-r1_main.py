@@ -11,9 +11,9 @@ def generate_pr_description(diff_content, pr_number):
         print("Error: FAST_API_URL is not set.")
         return "Error: FAST_API_URL is not configured."
 
-    prompt="""
+    prompt=""" Using the given code changes,
 
-1.Analyze and give an overall score for updated code based on Readability, Maintainability, and Clarity. 
+1.Analyze and give an overall score for the updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {{
@@ -40,7 +40,7 @@ readability_score: -1 (Poor) Code is highly unreadable.
 """
     prompt+="""
     
-2. Analyze and give an overall score for updated code based on Robustness and Error handling. 
+2. Analyze and give an overall score for the updated code based on Robustness and Error handling. 
 
 The return format should be in the below json format:
 {{
@@ -66,7 +66,7 @@ Scoring Criteria:
  """
     prompt+="""
 
-3. Analyze and give an overall score for updated code based on Security and Vulnerability. 
+3. Analyze and give an overall score for the updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
 {{
     "security_score": “<score>”,
@@ -92,7 +92,7 @@ Scoring Criteria:
     
     prompt+="""
     
-4. And Give an overall score for code changes based on Performance and Efficiency. 
+4. And Give an overall score for the updated based on Performance and Efficiency. 
 
 The return format should be in the below json format:
 {{
@@ -115,7 +115,7 @@ performance_score: 1 (Excellent) The code has improved either time complexity or
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
 """    	
-    prompt+=f""" These are the code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
+    prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
     try:
         print(f" Sending request to FAST_API_URL: {FAST_API_URL}")
         
