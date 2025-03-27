@@ -12,13 +12,9 @@ def generate_pr_description(diff_content, pr_number):
         return "Error: FAST_API_URL is not configured."
 
     
-    prompt=f"These are the code changes: \n\nPR Summary: \nPR #{pr_number}\n\nCode Changes:\n{diff_content}."
-    
-    prompt+=""" Analyze the given code changes and
+    prompt=""" Using the given code changes,
 
-1. Now, Analyze the given code changes and 
-
-Give an overall score for updated code based on Readability, Maintainability, and Clarity. 
+1.Analyze and give an overall score for the updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {{
@@ -45,9 +41,7 @@ readability_score: -1 (Poor) Code is highly unreadable.
 """
     prompt+="""
     
-2. Now, Analyze the given code changes and 
-
-give an overall score for updated code based on Robustness and Error handling. 
+2. Analyze and give an overall score for the updated code based on Robustness and Error handling. 
 
 The return format should be in the below json format:
 {{
@@ -73,9 +67,7 @@ Scoring Criteria:
  """
     prompt+="""
 
-3. Now, Analyze the given code changes and 
-
-give an overall score for updated code based on Security and Vulnerability. 
+3. Analyze and give an overall score for the updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
 {{
     "security_score": “<score>”,
@@ -98,12 +90,10 @@ Scoring Criteria:
 	security_score: 0 (Moderate) A few security or vulnerability issues and mostly follows checkboxes.
 	security_score: -1 (Poor) A lot of security and vulnerability issues and does not follows all checkboxes.
 """
-	
+    
     prompt+="""
     
-4. Now, Analyze the given code changes and 
-
-give an overall score for updated code based on Performance and Efficiency. 
+4. And Give an overall score for the updated based on Performance and Efficiency. 
 
 The return format should be in the below json format:
 {{
@@ -125,9 +115,9 @@ Scoring Criteria:
 performance_score: 1 (Excellent) The code has improved either time complexity or space complexity and there are no unnecessary computations. 
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
-
-"""
-
+"""    	
+    prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
+	
     try:
         print(f"Sending request to FAST_API_URL: {FAST_API_URL}")
         
