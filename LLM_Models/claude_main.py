@@ -3,21 +3,10 @@ import sys
 import json
 import openai
 
-#setting the api key for claude
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-if not ANTHROPIC_API_KEY:
-    print("Error: ANTHROPIC_API_KEY is not set.")
-    sys.exit(1)
+client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
 anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
-def query_claude(prompt):
-    response = anthropic_client.messages.create(
-        model="claude-3-sonnet-20240229",
-        temperature=0.3,
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return response.content[0].text.strip()
 
 def generate_pr_description(diff_content, pr_number):
     
@@ -125,17 +114,27 @@ performance_score: 1 (Excellent) The code has improved either time complexity or
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
 """    	
-    prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""	
+    prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
+	
+    return prompt
     
+def analyze_with_llm(pr_number, prompt):
     try:
-        generated_text = query_claude(full_prompt)
-        if not generated_text.strip():
-            return "Model returned empty response."
-        return generated_text
+        message = client.messages.create(
+        model="claude-3-7-sonnet-20250219",
+        max_tokens=2048,
+        system="Respond only in JSON format with keys: efficiency_score and output.",
+        messages=[{"role": "user", "content": prompt}]
 
+   ) 
+        print(f"\n===== Raw Response from LLM (PR_ID {pr_id}) =====\n")
+        print(message.content[0].text)
+
+        return message.content[0].text
+    
     except Exception as e:
-        print(f"Error: Failed contacting Claude API - {e}")
-        return "Error: Unable to contact Claude API."
+        print(f"Error processing prompt for {repo_name} PR_ID {pr_id}: {e}")
+        return None
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -152,7 +151,8 @@ if __name__ == "__main__":
             print("Warning: Diff file empty.")
             pr_body = "No changes detected."
         else:
-            pr_body = generate_pr_description(diff_content, pr_number)
+            prompt = generate_pr_description(diff_content, pr_number)
+	    pr_body = analyze_with_llm(pr_number, prompt)
 
         with open("pr_description.txt", "w") as f:
             f.write(pr_body)
