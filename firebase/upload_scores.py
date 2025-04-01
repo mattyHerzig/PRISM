@@ -13,7 +13,7 @@ def extract_scores(text):
     }
 
     for key in scores:
-     label = key.replace("_score", "")  # e.g., "readability"
+     label = key.replace("_score", "")
      pattern = rf'{label}\s*(score)?\s*[:=]\s*["“]?(\d)["”]?'
      match = re.search(pattern, text, re.IGNORECASE)
      if match:
