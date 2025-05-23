@@ -30,6 +30,7 @@ jobs:
           git fetch origin main
           git diff origin/main...HEAD > diff_content.txt
           echo "Diff content saved to diff_content.txt"
+          cat diff_content.text
 
       - name: Select Model
         run: |
