@@ -65,13 +65,13 @@ if __name__ == "__main__":
 
         for line in pr_data.splitlines():
             if line.lower().startswith("readability score:"):
-                scores["readability_score"] = float(line.split(":")[1].strip())
+                scores["readability_score"] = int(line.split(":")[1].strip())
             elif line.lower().startswith("robustness score:"):
-                scores["robustness_score"] = float(line.split(":")[1].strip())
+                scores["robustness_score"] = int(line.split(":")[1].strip())
             elif line.lower().startswith("security score:"):
-                scores["security_score"] = float(line.split(":")[1].strip())
+                scores["security_score"] = int(line.split(":")[1].strip())
             elif line.lower().startswith("performance score:"):
-                scores["performance_score"] = float(line.split(":")[1].strip())
+                scores["performance_score"] = int(line.split(":")[1].strip())
 
         print("PR body snippet:")
         print(pr_data[:300])
