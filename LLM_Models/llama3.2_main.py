@@ -132,15 +132,15 @@ performance_score: -1 (Poor) The code reduces the time or space complexity and d
         generated = response_json.get("response")
         if isinstance(generated, dict):
             return (
-                   f"Readability Score: {generated_text.get('readability_score')}\n"
-                   f"Robustness Score: {generated_text.get('robustness_score')}\n"
-                   f"Security Score: {generated_text.get('security_score')}\n"
-                   f"Performance Score: {generated_text.get('performance_score')}\n"
-                   f"Explanation:\n{generated_text.get('output')}"
-                   )
+                f"Readability Score: {generated.get('readability_score')}\n"
+                f"Robustness Score: {generated.get('robustness_score')}\n"
+                f"Security Score: {generated.get('security_score')}\n"
+                f"Performance Score: {generated.get('performance_score')}\n"
+                f"\nExplanation:\n{generated.get('output')}"
+            )
 
         if not str(generated).strip():
-            print("Warning: FASTAPI API returned an empty response.")
+            print("Warning: FAST API returned an empty response.")
             return "No content from the model."
 
         return str(generated)
