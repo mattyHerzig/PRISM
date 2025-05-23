@@ -18,8 +18,7 @@ def generate_pr_description(diff_content, pr_number):
 
 The return format should be in the below json format:
 {{
-    "readability_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "readability_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -45,8 +44,7 @@ readability_score: -1 (Poor) Code is highly unreadable.
 
 The return format should be in the below json format:
 {{
-    "robustness_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "robustness_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -70,8 +68,7 @@ Scoring Criteria:
 3. Analyze and give an overall score for the updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
 {{
-    "security_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "security_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -97,8 +94,7 @@ Scoring Criteria:
 
 The return format should be in the below json format:
 {{
-    "performance_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "performance_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -116,6 +112,7 @@ performance_score: 1 (Excellent) The code has improved either time complexity or
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
 """    	
+    prompt+=f"""The output justifying all the scores."""
     prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
 	
     try:
