@@ -112,7 +112,7 @@ performance_score: 1 (Excellent) The code has improved either time complexity or
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
 """    	
-    prompt+=f"""The output justifying all the scores."""
+    prompt+=f"""output: Reason for the scores"""
     prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
 	
     try:
