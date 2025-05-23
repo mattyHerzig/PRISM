@@ -121,7 +121,7 @@ performance_score: -1 (Poor) The code reduces the time or space complexity and d
     try:
         print(f" Sending request to FAST_API_URL: {FAST_API_URL}")
         
-        response = requests.post(FAST_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
+        response = requests.post(FAST_API_URL, json={"model": "llama3.2", "prompt": prompt})
         
         if response.status_code != 200:
             print(f" Error: Received status code {response.status_code} from FAST API")
