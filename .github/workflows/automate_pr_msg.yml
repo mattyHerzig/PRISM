@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Model Dispatcher
         env:
-          FAST_API_URL: https://8f3f-2601-647-4601-2b0-4c12-27d6-c1ee-46f5.ngrok-free.app/generate
+          FAST_API_URL: https://c4e2-2601-647-4601-2b0-1df7-1223-a4c9-5524.ngrok-free.app/generate
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
