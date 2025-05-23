@@ -11,14 +11,14 @@ def generate_pr_description(diff_content, pr_number):
         print("Error: FAST_API_URL is not set.")
         return "Error: FAST_API_URL is not configured."
 
+
     prompt=""" Using the given code changes,
 
 1.Analyze and give an overall score for the updated code based on Readability, Maintainability, and Clarity. 
 
 The return format should be in the below json format:
 {{
-    "readability_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "readability_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -44,8 +44,7 @@ readability_score: -1 (Poor) Code is highly unreadable.
 
 The return format should be in the below json format:
 {{
-    "robustness_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "robustness_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -69,8 +68,7 @@ Scoring Criteria:
 3. Analyze and give an overall score for the updated code based on Security and Vulnerability. 
 The return format should be in the below json format:
 {{
-    "security_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "security_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -96,8 +94,7 @@ Scoring Criteria:
 
 The return format should be in the below json format:
 {{
-    "performance_score": “<score>”,
-    "output": "<text explanation of the reason for the scoring and suggested improvements>”
+    "performance_score": “<score>”
 }}
 
 Be careful while analyzing the code. Make sure to identify all the code changes and double-check the answer. Use the checkboxes and scoring criteria below while assigning the score.
@@ -115,36 +112,43 @@ performance_score: 1 (Excellent) The code has improved either time complexity or
 performance_score: 0 (Moderate) The code has not improved time or space complexity and slightly follows checkboxes.
 performance_score: -1 (Poor) The code reduces the time or space complexity and does not follow any of the checkboxes.
 """    	
+    prompt+=f"""output: Reason for the scores"""
     prompt+=f""" code changes for the Pull Request ID {pr_number}:### Code Changes (Diff):{diff_content}"""
 	
     try:
-        print(f" Sending request to FAST_API_URL: {FAST_API_URL}")
-        
+        print(f"Sending request to FAST_API_URL: {FAST_API_URL}")
         response = requests.post(FAST_API_URL, json={"model": "deepseek-r1", "prompt": prompt})
-        
+
         if response.status_code != 200:
-            print(f" Error: Received status code {response.status_code} from FAST API")
+            print(f"Error: Received status code {response.status_code} from FAST API")
             return "Error generating PR description."
 
         response_json = response.json()
-        print(" Debug: Full response from FastAPI:", json.dumps(response_json, indent=2))
+        print("Debug: Full response from FastAPI:", json.dumps(response_json, indent=2))
 
-        # Extract response text safely
-        generated_text = response_json.get("response", "No content from deepseek.")
-        
-        if not generated_text.strip():
-            print("Warning: FASTAPI API returned an empty response.")
-            return "No content from deepseek."
+        generated = response_json.get("response")
+        if isinstance(generated, dict):
+            return (
+                f"Readability Score: {generated.get('readability_score')}\n"
+                f"Robustness Score: {generated.get('robustness_score')}\n"
+                f"Security Score: {generated.get('security_score')}\n"
+                f"Performance Score: {generated.get('performance_score')}\n"
+                f"\nExplanation:\n{generated.get('output')}"
+            )
 
-        return generated_text
+        if not str(generated).strip():
+            print("Warning: FAST API returned an empty response.")
+            return "No content from the model."
+
+        return str(generated)
 
     except requests.exceptions.RequestException as e:
-        print(f" Error: Failed to reach FAST API - {e}")
+        print(f"Error: Failed to reach FAST API - {e}")
         return "Error: Unable to contact FAST API."
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print(" Error: Missing required arguments. Usage: python main.py <diff_file_path> <pr_number>")
+        print("Error: Missing required arguments. Usage: python main.py <diff_file_path> <pr_number>")
         sys.exit(1)
 
     diff_file_path = sys.argv[1]
@@ -153,23 +157,22 @@ if __name__ == "__main__":
     try:
         with open(diff_file_path, "r") as f:
             diff_content = f.read().strip()
-        
+
         if not diff_content:
-            print(" Warning: The diff file is empty. No content to process.")
+            print("Warning: The diff file is empty. No content to process.")
             pr_body = "No changes detected in this PR."
         else:
             pr_body = generate_pr_description(diff_content, pr_number)
 
-        # Write the generated PR description to a file
         with open("pr_description.txt", "w") as f:
             f.write(pr_body)
 
         print("PR description saved successfully.")
 
     except FileNotFoundError:
-        print(f" Error: Diff file '{diff_file_path}' not found.")
+        print(f"Error: Diff file '{diff_file_path}' not found.")
         sys.exit(1)
 
     except Exception as e:
-        print(f" Unexpected Error: {e}")
+        print(f"Unexpected Error: {e}")
         sys.exit(1)
